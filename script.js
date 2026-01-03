@@ -12,8 +12,8 @@ function displayList() {
 
 function addToDo(e){
     e.preventDefault();
-    const newToDo = toDoActivity.value[0].toUpperCase() + toDoActivity.value.slice(1);
-    const newToDoTime = getTime(toDoTime.value);
+    const newToDo = toDoActivity.value;
+    const newToDoTime = toDoTime.value;
 
 
     if (newToDo === '') {
@@ -24,8 +24,8 @@ function addToDo(e){
         return;
     }
 
-    createNewToDo(newToDo, newToDoTime);
-    addToDoToStorage(newToDo, newToDoTime);
+    createNewToDo(newToDo[0].toUpperCase() + toDoActivity.value.slice(1), getTime(newToDoTime));
+    addToDoToStorage(newToDo[0].toUpperCase() + toDoActivity.value.slice(1), getTime(newToDoTime));
 
     toDoActivity.value = '';
     toDoTime.value = '';
@@ -72,11 +72,7 @@ function addToDoToStorage(toDo, toDoTime) {
     localStorage.setItem('toDoList', JSON.stringify(completeToDoList))
 }
 
-function getToDoTimeFromStorage() {
-    
-}
-
-function getToDoFromStorage(){
+function getToDoFromStorage() {
     let toDoListFromStorage;
 
     if (localStorage.getItem('toDoList') === null) {
@@ -86,6 +82,36 @@ function getToDoFromStorage(){
     }
 
     return toDoListFromStorage;
+}
+
+function onClickToDo (e) {
+    if (e.target.parentElement.classList.contains('remove-item')) {
+    removeToDo(e.target.parentElement.parentElement);
+  }
+}
+
+function removeToDo(item) {
+    item.remove(); 
+
+    removeToDoFromStorage(item.textContent);
+}
+
+function removeToDoFromStorage(toDo){
+    let toDoFromStorage = getToDoFromStorage()
+    const newToDo = toDo.split('');
+    let arr = [];
+    
+    for (let i = 0; i < newToDo.length; i++) {
+                if (newToDo[i] != '|') {
+            arr.push(newToDo[i]);
+        } else {
+            break
+        }
+    }
+
+    const result = arr.toSpliced((arr.length - 1), 1).join('')
+    toDoFromStorage = toDoFromStorage.filter(({toDo1}) => toDo1 != result);
+    localStorage.setItem('toDoList', JSON.stringify(toDoFromStorage))
 }
 
 function getTime(inputTime){
@@ -123,8 +149,9 @@ function getTime(inputTime){
 }
 
 function init() {
-    document.addEventListener('submit', addToDo)
     document.addEventListener('DOMContentLoaded', displayList)
+    document.addEventListener('submit', addToDo)
+    toDoList.addEventListener('click', onClickToDo)
 }
 
 init()
