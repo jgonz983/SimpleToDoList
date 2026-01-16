@@ -85,3 +85,52 @@ ul li {
 .textRed {
     color: red;
 }
+
+@media screen and (width < 900px){
+    .container {
+        width: 700px;
+    }
+
+    .formControl input {
+        width: 100%;
+        padding-right: 25px;
+    }
+
+    #toDoList {
+        justify-content: space-between;
+    }
+}
+
+@media screen and (width < 700px) {
+    .container {
+        margin: 0 auto;
+        width: 300px;
+    }
+
+    #toDoForm {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .items {
+        display: block;
+        margin: 0 auto;
+    }
+
+    .formControl input {
+        padding: 20px 5px;
+    }
+
+    .submitBtn {
+        width: 104%;
+        padding: 10px 110px;
+        margin: 20px 0;
+    }
+
+    ul li {
+        width: 100%;
+        margin: 0 auto 30px;
+        padding: 20px 5px;
+        max-width: none;
+    }
+}
